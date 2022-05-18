@@ -1,6 +1,10 @@
 
 # Bobatea 
 
+<p align="center">
+  <img src="https://upload.cc/i1/2022/05/18/l39xUI.png" width="150" >
+</p>
+
 ## a toolset wrapper for Sklearn , pandas ... etc. for data analysis tasks and ML tasks in terminal.
 
 
