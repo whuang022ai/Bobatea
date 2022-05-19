@@ -8,18 +8,10 @@ from io import StringIO
 import argparse
 
 parser = argparse.ArgumentParser(description='csv/tsv/txt dataframe filter ')
-
 dic={'csv':',','tsv':'\t','txt':' '}
-
-parser.add_argument('--d', action='store', dest='decimal',
-                    default="csv")
+parser.add_argument('-d','--delimiter', action='store', dest='delimiter',help='set input datasheet type:[csv|tsv|txt] ',default="csv")
 args = parser.parse_args()
-
 output = StringIO()
-
-
-df = pd.read_csv(sys.stdin, index_col=None,header=0,decimal=dic[args.decimal])
-
+df = pd.read_csv(sys.stdin, index_col=None,header=0,delimiter=dic[args.delimiter])
 df.to_csv(output,header=True, index=True)
-
-print (output.getvalue())
+print (output.getvalue(), file = sys.stdout)

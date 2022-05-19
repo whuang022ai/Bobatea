@@ -9,8 +9,8 @@ import argparse
 import sys
 import seaborn as sns
 parser = argparse.ArgumentParser(description='sklearn Kmeans ')
-parser.add_argument('--n', action='store', dest='n_clusters',
-                    default=3)
+parser.add_argument('-n','--n_clusters', action='store', dest='n_clusters',
+                    default=3,help='set k-means output cluster number')
 args = parser.parse_args()
 data = pd.read_csv(sys.stdin, index_col=0)
 
@@ -22,7 +22,7 @@ data['kmeans_predicted_cluster'] = model.labels_.astype(int)
 output = StringIO()
 data.to_csv(output)
 
-print (output.getvalue())
+print (output.getvalue(), file = sys.stdout)
 
 ax=sns.scatterplot(x=data.columns[0], y=data.columns[1], hue="kmeans_predicted_cluster", data=data)
 

@@ -23,4 +23,4 @@ log_data = log_data[ np.isfinite( log_data ).all( axis = 1) ]
 output = StringIO()
 
 log_data.to_csv(output, header=True, index=True)
-print (output.getvalue())
+print (output.getvalue(), file = sys.stdout)
