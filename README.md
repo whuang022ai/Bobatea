@@ -30,6 +30,7 @@ $ bash install.sh
 | header      | add header to data                      | 
 | cget        | get wanted columns                      |
 | cdrop       | drop columns                            |
+| merge       | merge two datasheets together by index  |
 | csvf        | feature value filter                    |
 | t           | data transpose                          |
 | log         | apply logarithm                         |
@@ -61,5 +62,7 @@ $ { echo "sepal_length,sepal_width,petal_length,petal_width,species" ; cat iris.
 
 or
 ```bash
-$ cat iris.data |index | header --h "sepal_length sepal_width petal_length petal_width species" | cdrop --w "species" | log | pca | scatter
+$ cat iris.data | header --h "sepal_length,sepal_width,petal_length,petal_width,species" |index | cdrop --w "species" | log | pca | scatter
 ```
+
+more exampls please checkout ./test/
