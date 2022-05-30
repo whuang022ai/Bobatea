@@ -15,3 +15,6 @@ alias kmean=Kmeans.py
 alias index=CSVAddIndex.py
 alias header=CSVAddHeader.py
 alias merge=CSVMerge.py
+alias tsne=tSNE.py
+alias curve=Curve.py
+alias mean=ArithmeticMean.py

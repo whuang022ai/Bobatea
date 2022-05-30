@@ -34,10 +34,13 @@ $ bash install.sh
 | csvf        | feature value filter                    |
 | t           | data transpose                          |
 | log         | apply logarithm                         |
+| mean        | apply arithmetic mean                   |
 | pca         | apply Principal component analysis      |
+| tsne        | apply tSNE                              |
 | scatter     | plot scatterter                         |
 | kmean       | plot 2D kmeans                          |
 | pair        | plot pair plot                          |
+| curve       | plot line curve plot                    |
 | hcluster    | plot hierarchical cluster plot          |
 
 This commands are using with shell commands like cat , | , > etc... together to procressing data.
