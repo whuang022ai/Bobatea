@@ -1,17 +1,20 @@
 
-# Bobatea 
+# Bobatea 波霸奶茶
+
+
+## An all-in-one command-line toolbox for data scientists to complete their daily job easier and Low-code .
 
 <p align="center">
   <img src="https://upload.cc/i1/2022/05/18/l39xUI.png" width="150" >
 </p>
 
-## a toolset wrapper for Sklearn , pandas ... etc. for data analysis tasks and ML tasks in terminal.
-
+## Support common data cleaning and machine learning methods from Pandas, Sklearn Seborn, etc.
+---
 
 ## Install
 
-add /{your_path}/Bobatea_datatool/bin to ~/.bashrc
-example : PATH=~/Bobatea_datatool/bin:$PATH
+add /your_path/Bobatea_datatool/bin to ~/.bashrc
+example : "PATH=~/Bobatea_datatool/bin:$PATH"
 
 source ~/.bashrc
 
@@ -28,8 +31,9 @@ $ bash install.sh
 |-------------|-----------------------------------------|
 | index       | add index to data                       | 
 | header      | add header to data                      | 
-| cget        | get wanted columns                      |
-| cdrop       | drop columns                            |
+| take        | take wanted columns                     |
+| drop        | drop unwant columns                     |
+| range       | take wanted rows range                  |
 | merge       | merge two datasheets together by index  |
 | csvf        | feature value filter                    |
 | t           | data transpose                          |
@@ -43,29 +47,20 @@ $ bash install.sh
 | curve       | plot line curve plot                    |
 | hcluster    | plot hierarchical cluster plot          |
 
-This commands are using with shell commands like cat , | , > etc... together to procressing data.
+These commands are well integrated with terminal commands like cat, |, >, etc... together to build the data pipeline faster and easier.
 
-## Example of iris data apply pca
+## Example of iris data applying pca
 
 step1. get data :
 ```bash
 $ wget http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
 
 ```
-step2. add header,index and choose features , run pca and plot
+step2. add header, index and choose features, run PCA, and plot in just less than one minute.
 ```bash
-$ { echo "sepal_length,sepal_width,petal_length,petal_width,species" ; cat iris.data; } | index | cget --w "sepal_length sepal_width petal_length petal_width" |log | pca | scatter
+$ cat iris.data | header --h "sepal_length,sepal_width,petal_length,petal_width,species"  | drop species | pca | scatter 
 
-```
-or
 
-```bash
-$ { echo "sepal_length,sepal_width,petal_length,petal_width,species" ; cat iris.data; }  | index | cdrop --w "species" | log | pca | scatter
-```
-
-or
-```bash
-$ cat iris.data | header --h "sepal_length,sepal_width,petal_length,petal_width,species" |index | cdrop --w "species" | log | pca | scatter
 ```
 
 more exampls please checkout ./test/
