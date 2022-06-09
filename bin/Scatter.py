@@ -7,32 +7,27 @@ import pandas as pd
 import numpy as np
 from io import StringIO
 import argparse
+import Util
+# build parser
 parser = argparse.ArgumentParser(description='Matplotlib scatter plot ')
-
-parser.add_argument('-t','--title', action='store', dest='title', help='set plot title',
-                    default="scatter plot")
-
-parser.add_argument('-x','--xlabel', action='store', dest='xlabel',help='set x-axis label',
-                    default="x")
-parser.add_argument('-y','--ylabel', action='store', dest='ylabel',help='set y-axis label',
-                    default="y")
-
+parser=Util.add_argument_common(parser)
+parser=Util.add_argument_plot(parser)
 args = parser.parse_args()
-
+# set ax
 fig, ax = plt.subplots()
-
-
-data = pd.read_csv(sys.stdin, index_col=0,header=0)
-output = StringIO()
-data.to_csv(output)
-
-print (output.getvalue(), file = sys.stdout)
-
+# read input
+data=Util.input(parser)
+Util.output(parser,data)
+# plot data
 ax.plot(data.values[:, 0], data.values[:, 1], 'o')
 ax.set_title(args.title)
 ax.set_xlabel(args.xlabel)
 ax.set_ylabel(args.ylabel)
+# anno scatter plot
 for i, marker in enumerate(data.index):
     ax.annotate(marker, (data.values[i, 0], data.values[i, 1] ), fontsize=6)
-
-plt.show()
+# output fig
+if args.output_img:
+    Util.savefig_autoformat(args.output_img,fig)
+else:
+    plt.show()
