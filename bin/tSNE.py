@@ -7,29 +7,38 @@ import numpy as np
 from io import StringIO
 import argparse
 from sklearn import manifold
-parser = argparse.ArgumentParser(description='sklearn tSNE ')
-parser.add_argument('-n','--n_components', action='store', dest='n_components',
-                    default=2 ,help='set tSNE output component number' )
-parser.add_argument('-t','--transform', action='store_true',
-                    dest='input_matrix_transform',
-                    help='input matrix transform (input.T)')
+import Util
+from Base import Operator
 
-args = parser.parse_args()
 
-data = pd.read_csv(sys.stdin, index_col=0)
+class tSNE_Operator(Operator):
 
-if args.input_matrix_transform:
-    X = data.values.T
-    index_out = data.columns
-else:
-    X = data.values
-    index_out = data.index
+    def __init__(self) -> None:
+        super().__init__()
 
-tSNE = manifold.TSNE(n_components=int(args.n_components))
+    def build_argparser(self):
+        self._parser = argparse.ArgumentParser(description='sklearn tSNE ')
+        self._parser = Util.add_argument_common(self._parser)
+        self._parser.add_argument('-n', '--n_components', action='store', dest='n_components',
+                                  default=2, help='set tSNE output component number')
+        self._parser.add_argument('-tsne', '--tsne_prefix', action='store', dest='tsne_prefix', default='tSNE',
+                                  help='set the prefix name of each tSNE components (defult is \'tSNE\' , result will be tSNE1 , tSNE2 ... etc. )')
 
-X_tSNE = tSNE.fit_transform(X)
-output = StringIO()
-new_column = ['tSNE' + str(i + 1) for i in range(X_tSNE.shape[1])]
-pd.DataFrame(X_tSNE, index=index_out, columns=new_column).to_csv(output,
-        header=True, index=True)
-print (output.getvalue(), file = sys.stdout)
+    def data_in(self):
+        self.data = Util.input(self._parser)
+
+    def procress(self):
+        self.tSNE = manifold.TSNE(n_components=int(self._args.n_components))
+        X_tSNE = self.tSNE.fit_transform(self.data)
+        new_column = [str(self._args.tsne_prefix) + str(i + 1)
+                      for i in range(X_tSNE.shape[1])]
+        self.result = pd.DataFrame(
+            X_tSNE, index=self.data.index, columns=new_column)
+
+    def data_out(self):
+        Util.output(self._parser, self.result)
+
+
+if __name__ == '__main__':
+
+    tSNE_Operator().run()
