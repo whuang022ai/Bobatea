@@ -5,7 +5,7 @@
 ## An all-in-one command-line toolbox for data scientists to complete their daily job easier and Low-code .
 
 <p align="center">
-  <img src="https://imgur.com/ua98vQA" width="150" >
+  <img src="https://i.imgur.com/ua98vQA.png" width="150" >
 </p>
 
 ## Support common data cleaning and machine learning methods from Pandas, Sklearn Seborn, etc.
