@@ -9,14 +9,14 @@ from io import StringIO
 import argparse
 from scipy.interpolate import interp1d
 from dateutil.parser import parse
-import pickle
-
+import Util
 def is_date(string, fuzzy=False):
     """
     Return whether the string can be interpreted as a date.
 
     :param string: str, string to check for date
     :param fuzzy: bool, ignore unknown tokens in string if True
+    ref: https://stackoverflow.com/questions/25341945/check-if-string-has-date-any-format
     """
     string=str(string)
     try: 
@@ -27,14 +27,8 @@ def is_date(string, fuzzy=False):
         return False
 
 parser = argparse.ArgumentParser(description='Matplotlib smooth line curve plot ')
-
-parser.add_argument('-t','--title', action='store', dest='title', help='set plot title',
-                    default="scatter plot")
-
-parser.add_argument('-xl','--xlabel', action='store', dest='xlabel',help='set x-axis label',
-                    default="x")
-parser.add_argument('-yl','--ylabel', action='store', dest='ylabel',help='set y-axis label',
-                    default="y")
+parser=Util.add_argument_common(parser)
+parser=Util.add_argument_plot(parser)
 parser.add_argument('-x','--xname', action='store', dest='xname',help='get x-axis data',
                     default="x")
 parser.add_argument('-y','--yname', action='store', dest='yname',help='get y-axis data',
@@ -50,13 +44,10 @@ smooth=args.smooth
 fig, ax = plt.subplots()
 
 
-data = pd.read_csv(sys.stdin, index_col=0,header=0)
+data = pd.read_csv(sys.stdin, index_col=None,header=0)
 data=data[[args.xname,args.yname]]
 
-output = StringIO()
-data.to_csv(output)
-
-print (output.getvalue(), file = sys.stdout)
+Util.output(parser,data)
 
 if smooth:
 
@@ -82,12 +73,10 @@ if args.datapoint:
 ax.set_title(args.title)
 ax.set_xlabel(args.xlabel)
 ax.set_ylabel(args.ylabel)
+
 plt.xticks(rotation=90)
 if args.x_tick_number is None:
     args.x_tick_number=len(data.values[:, 0])
 ax.xaxis.set_major_locator(plt.MaxNLocator(args.x_tick_number))
 
-with open('test.ax.1', 'wb') as f:
-    pickle.dump(ax, f)
-    
 plt.show()
