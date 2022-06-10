@@ -2,32 +2,42 @@
 # -*- coding: utf-8 -*-
 
 import matplotlib.pyplot as plt
-import sys
-import pandas as pd
-import numpy as np
-from io import StringIO
 import argparse
 import Util
-# build parser
-parser = argparse.ArgumentParser(description='Matplotlib scatter plot ')
-parser=Util.add_argument_common(parser)
-parser=Util.add_argument_plot(parser)
-args = parser.parse_args()
-# set ax
-fig, ax = plt.subplots()
-# read input
-data=Util.input(parser)
-Util.output(parser,data)
-# plot data
-ax.plot(data.values[:, 0], data.values[:, 1], 'o')
-ax.set_title(args.title)
-ax.set_xlabel(args.xlabel)
-ax.set_ylabel(args.ylabel)
-# anno scatter plot
-for i, marker in enumerate(data.index):
-    ax.annotate(marker, (data.values[i, 0], data.values[i, 1] ), fontsize=6)
-# output fig
-if args.output_img:
-    Util.savefig_autoformat(args.output_img,fig)
-else:
-    plt.show()
+from Base import Operator
+
+class ScatterPlot_Operator(Operator):
+
+    def __init__(self) -> None:
+
+        self.fig,  self.ax = plt.subplots()
+        super().__init__()
+    
+    def build_argparser(self):
+
+        self._parser = argparse.ArgumentParser(description='Matplotlib scatter plot ')
+        self._parser=Util.add_argument_common(self._parser)
+        self._parser=Util.add_argument_plot(self._parser)
+    
+    def data_in(self):
+        self.data=Util.input(self._parser)
+    
+    def procress(self):
+        self.ax.plot(self.data.values[:, 0], self.data.values[:, 1], 'o')
+        self.ax.set_title(self._args.title)
+        self.ax.set_xlabel(self._args.xlabel)
+        self.ax.set_ylabel(self._args.ylabel)
+        # anno
+        for i, marker in enumerate(self.data.index):
+            self.ax.annotate(marker, (self.data.values[i, 0], self.data.values[i, 1] ), fontsize=6)
+    
+    def data_out(self):
+        Util.output(self._parser,self.data)
+        if self._args.output_img:
+            Util.savefig_autoformat(self._args.output_img,self.fig)
+        else:
+            plt.show()
+
+if __name__ == '__main__':
+
+    ScatterPlot_Operator().run()
