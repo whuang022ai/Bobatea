@@ -51,10 +51,31 @@ def suppress_broken_pipe_msg(f):
     return wrapper
 
 
-def add_argument_common(parser: argparse.ArgumentParser):
+def remove_argument(parser, arg):
+    # from https://stackoverflow.com/questions/32807319/disable-remove-argument-in-argparse
+    # To remove --bar, call:
+    # remove_option(parser, "bar")
+    for action in parser._actions:
+        opts = action.option_strings
+        if (opts and opts[0] == arg) or action.dest == arg:
+            parser._remove_action(action)
+            break
+    for action in parser._action_groups:
+        for group_action in action._group_actions:
+            if group_action.dest == arg:
+                action._group_actions.remove(group_action)
+                
+                return parser
 
-    parser.add_argument('-o', '--output', action='store', dest='output',
-                        help='output result to file path (defult to standard output )', default=sys.stdout)
+
+def add_argument_common(parser: argparse.ArgumentParser):
+    parser = add_argument_common_input(parser)
+    parser = add_argument_common_output(parser)
+    return parser
+
+
+def add_argument_common_input(parser: argparse.ArgumentParser):
+
     parser.add_argument('-i', '--input', action='store', dest='input',
                         help='input to friom file path (defult to standard input )', default=sys.stdin)
     parser.add_argument('-ts', '--transform', action='store_true',
@@ -70,7 +91,17 @@ def add_argument_common(parser: argparse.ArgumentParser):
                         help='set input datasheet header (defult : 0) : the first line (row = 0) of file will be the header', default=0)
     parser.add_argument('-inh', '--input_no_header', action='store_true',
                         dest='input_no_header', help='set input datasheet with no header when read in')
-    parser.add_argument('-ox', '--output_with_index', action='store_true',
+    return parser
+
+
+def add_argument_common_output(parser: argparse.ArgumentParser):
+
+    parser.add_argument('-o', '--output', action='store', dest='output',
+                        help='output result to file path (defult to standard output )', default=sys.stdout)
+
+    parser.add_argument('-ox', '--output_index_col', action='store', dest='output_index_col', type=int,
+                        help='set output datasheet index col (defult : None , with no col be set as index) ', default=None)
+    parser.add_argument('-owx', '--output_with_index', action='store_true',
                         dest='output_with_index', help='set output datasheet with index', default=False)
 
     return parser
@@ -88,6 +119,16 @@ def add_argument_plot(parser: argparse.ArgumentParser):
                         dest='output_img', help='output image to file path ')
 
     return parser
+
+
+def add_argument_ml_model(parser: argparse.ArgumentParser):
+
+    parser.add_argument('-ms', '--model_save_path', action='store', dest='model_save_path', help='set model save path',
+                        default=None)
+    parser.add_argument('-ml', '--model_load_path', action='store', dest='model_load_path', help='set model load path',
+                        default=None)
+
+# def model_load(parser: argparse.ArgumentParser,model,)
 
 
 def input(parser: argparse.ArgumentParser):
@@ -120,14 +161,18 @@ def input(parser: argparse.ArgumentParser):
     return data
 
 
-
 def output(parser: argparse.ArgumentParser, data: pandas.DataFrame):
-    args = parser.parse_args()
-    output_to_file(file=args.output,data=data,index=args.index_col,header=True)
+    args = parser.parse_args()  # output_with_index
+    if args.output_index_col:
+        output_to_file(file=args.output, data=data,
+                       index=args.output_index_col, header=True)
+    else:
+        output_to_file(file=args.output, data=data,
+                       index=args.output_with_index, header=True)
 
 
 @suppress_broken_pipe_msg
-def output_to_file(file, data: pandas.DataFrame ,index : int ,header=True):
+def output_to_file(file, data: pandas.DataFrame, index: int, header=True):
     try:
         broken_pipe_exception = BrokenPipeError
     except NameError:  # Python 2
