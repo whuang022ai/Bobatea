@@ -7,19 +7,34 @@ import pandas as pd
 from io import StringIO
 import argparse
 import seaborn as sns
+import Util
+from Base import Operator
 
 
-parser = argparse.ArgumentParser(description='Seaborn pairplot')
-parser.add_argument('-t','--title', action='store', dest='title', help='set plot title',
-                    default="")
-args = parser.parse_args()
+class PairPlot_Operator(Operator):
 
-data = pd.read_csv(sys.stdin, index_col=0,header=0)
-output = StringIO()
-data.to_csv(output)
+    def __init__(self) -> None:
 
-print (output.getvalue(), file = sys.stdout)
+        super().__init__()
 
-ax=sns.pairplot(data)
-ax.fig.suptitle(args.title)
-plt.show()
+    def build_argparser(self):
+        self._parser = argparse.ArgumentParser(description='Seaborn pairplot')
+        self._parser.add_argument('-t', '--title', action='store', dest='title', help='set plot title',
+                                  default="")
+        self._parser=Util.add_argument_common(self._parser)
+
+    def data_in(self):
+        self.data = Util.input(self._parser)
+
+    def procress(self):
+        self.ax = sns.pairplot(self.data)
+        self.ax.fig.suptitle(self._args.title)
+
+    def data_out(self):
+        Util.output(self._parser, self.data)
+        plt.show()
+
+
+if __name__ == '__main__':
+
+    PairPlot_Operator().run()
