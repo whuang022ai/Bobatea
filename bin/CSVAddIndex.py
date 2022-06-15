@@ -6,12 +6,31 @@ import sys
 import numpy as np
 from io import StringIO
 import argparse
+from Base import Operator
+import Util
 
-parser = argparse.ArgumentParser(description='csv/tsv/txt dataframe filter ')
-dic={'csv':',','tsv':'\t','txt':' '}
-parser.add_argument('-d','--delimiter', action='store', dest='delimiter',help='set input datasheet type:[csv|tsv|txt] ',default="csv")
-args = parser.parse_args()
-output = StringIO()
-df = pd.read_csv(sys.stdin, index_col=None,header=0,delimiter=dic[args.delimiter])
-df.to_csv(output,header=True, index=True)
-print (output.getvalue(), file = sys.stdout)
+
+class CSVAddIndex_Operator(Operator):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def build_argparser(self):
+        self._parser = argparse.ArgumentParser(description='Add index for CSV')
+        self._parser = Util.add_argument_common(self._parser)
+
+    def data_in(self):
+
+        self.data = Util.input(self._parser)
+
+    def procress(self):
+        pass
+
+    def data_out(self):
+        output = StringIO()
+        self.data.to_csv(output, header=True, index=True)
+        print(output.getvalue(), file=sys.stdout)
+
+
+if __name__ == '__main__':
+
+    CSVAddIndex_Operator().run()
