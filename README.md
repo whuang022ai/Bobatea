@@ -34,7 +34,8 @@ $ bash install.sh
 | take        | take wanted columns                     |
 | drop        | drop unwant columns                     |
 | range       | take wanted rows range                  |
-| merge       | merge two datasheets together by index  |
+| merge       | merge two datasheets together           |
+| mergebyix   | merge multiple csv files by index       |
 | csvf        | feature value filter                    |
 | t           | data transpose                          |
 | log         | apply logarithm                         |
