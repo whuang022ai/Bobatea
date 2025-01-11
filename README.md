@@ -36,6 +36,7 @@ $ bash install.sh
 | range       | take wanted rows range                  |
 | merge       | merge two datasheets together           |
 | mergebyix   | merge multiple csv files by index       |
+| group       | group by  wanted column,output muti csvs|
 | csvf        | feature value filter                    |
 | t           | data transpose                          |
 | log         | apply logarithm                         |
