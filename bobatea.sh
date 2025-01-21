@@ -24,7 +24,8 @@ alias tsne=tSNE.py
 alias curve=Curve.py
 alias mean=ArithmeticMean.py
 alias kat=Concatenate.py
-
+alias group=CSVGroupby.py
+alias search=Search_Command.py
 range (){
     head -n "$2" | tail -n +"$1"
 }
