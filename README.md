@@ -2,7 +2,7 @@
 # Bobatea 波霸奶茶
 
 
-## An all-in-one command-line toolbox for data scientists to complete their daily job easier and Low-code .
+An all-in-one command-line toolbox for data scientists to complete their daily job easier and Low-code .
 
 <p align="center">
   <img src="https://i.imgur.com/ua98vQA.png" width="150" >
