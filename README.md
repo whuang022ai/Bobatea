@@ -7,8 +7,7 @@ An all-in-one command-line toolbox for data scientists to complete their daily j
 <p align="center">
   <img src="https://i.imgur.com/ua98vQA.png" width="150" >
 </p>
-
-## Support common data cleaning and machine learning methods from Pandas, Sklearn Seborn, etc.
+Support common data cleaning and machine learning methods from Pandas, Sklearn Seborn, etc.
 ---
 
 ## Install
