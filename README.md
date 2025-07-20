@@ -66,3 +66,9 @@ $ cat iris.data | header --h "sepal_length,sepal_width,petal_length,petal_width,
 ```
 
 more exampls please checkout ./test/
+
+## Developer
+
+. Ming Han Yang (whuang022@gmail.com)
+
+
