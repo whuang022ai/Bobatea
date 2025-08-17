@@ -1,7 +1,6 @@
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
 # Bobatea 波霸奶茶
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 An all-in-one command-line toolbox for data scientists to complete their daily job easier and Low-code .
 
